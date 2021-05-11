@@ -4,6 +4,7 @@
 #include <iostream>
 #include <cmath>
 
+//Klasa przechowuj¹ca macierz
 class Matrix
 {
 private:
@@ -76,19 +77,22 @@ public:
 		return this->w;
 	}
 
-	double getCell(int a, int b)
+	//Odczyt z podanej komórki
+	double getCell(int r, int c)
 	{
-		return this->data[a][b];
+		return this->data[r][c];
 	}
 
-	void setCell(int a, int b, double c)
+	//Zapis do podanej komórki
+	void setCell(int r, int c, double value)
 	{
-		if (a >= this->h || b >= this->w)
+		if (r >= this->h || c >= this->w)
 			return;
 
-		this->data[a][b] = c;
+		this->data[r][c] = value;
 	}
 
+	//Wypisanie macierzy do konsoli
 	void Print()
 	{
 		for (int i = 0; i < this->h; i++)
@@ -101,6 +105,7 @@ public:
 		}
 	}
 
+	//Zwrócenie macierzy transponowanej
 	Matrix T()
 	{
 		Matrix temp(this->w, this->h);
@@ -114,6 +119,7 @@ public:
 		return temp;
 	}
 
+	//Zwrócenie podmacierzy, bez podanego rzêdu i kolumny
 	Matrix Sub(int r, int c)
 	{
 		Matrix temp(this->h - 1, this->w - 1);
@@ -142,6 +148,7 @@ public:
 		return temp;
 	}
 
+	//Wylicza wyznacznik macierzy
 	double Det()
 	{
 		if (this->h == 1)
@@ -156,6 +163,7 @@ public:
 		return det;
 	}
 
+	//Zwraca macierz dope³nieñ algebraicznych (na potrzeby macierzy odwrotnej)
 	Matrix Comp()
 	{
 		Matrix temp(this->h, this->w);
@@ -171,11 +179,13 @@ public:
 		return temp;
 	}
 
+	//Zwraca macierz odwrotn¹
 	Matrix Inv()
 	{
 		return Comp().T() * (1 / Det());
 	}
 	
+	//Mno¿enie macierzy przez macierz
 	Matrix operator*(Matrix b)
 	{
 		Matrix temp(this->h, b.w);
@@ -195,6 +205,7 @@ public:
 		return temp;
 	}
 
+	//Mno¿enie macierzy przez skalar
 	Matrix operator*(double a)
 	{
 		Matrix temp(this->h, this->w);
@@ -210,21 +221,26 @@ public:
 	}
 };
 
+
+//Klasa rozwi¹zuj¹ca równania liniowe, bazuj¹ca na klasie macierzy
 class LinMatrix : public Matrix
 {
 public:
 	using Matrix::Matrix;
-	Matrix Subs(int r, std::vector<double> v)
+
+	//Zwraca macierz, gdzie podana kolumna, jest zast¹piona wartoœciami z wektora
+	Matrix Subs(int c, std::vector<double> v)
 	{
 		Matrix temp = *this;
 
 		for (int i = 0; i < temp.getHeight(); i++)
 		{
-			temp.setCell(i, r, v[i]);
+			temp.setCell(i, c, v[i]);
 		}
 		return temp;
 	}
 
+	//Zwraca wektor (Typu macierzy, dla ³atwiejszego wypisywania do konsoli, metod¹ Print) rozwi¹zañ uk³adu równañ liniowych
 	Matrix Solve(std::vector<double> v)
 	{
 		Matrix out(this->getWidth(), 1);

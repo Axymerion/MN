@@ -2,6 +2,7 @@
 #include <functional>
 #include "matrices.h"
 
+//Ca³kowanie metod¹ prostok¹tów
 double Int(std::function<double(double)> f, double a, double b, double h = 0.0001)
 {
 	double out = 0;
@@ -12,6 +13,7 @@ double Int(std::function<double(double)> f, double a, double b, double h = 0.000
 	return out;
 }
 
+//Wyliczenie wspó³czynników wielomianu aproksymuj¹cego
 Matrix Approx(std::function<double(double)> f, int st, double a, double b)
 {
 	LinMatrix A(st, st);
